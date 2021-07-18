@@ -1,0 +1,23 @@
+﻿<Window x:Class="GUIClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUIClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing" Background="#FF0F0F0F">
+    <Grid>
+
+        <TextBox x:Name="Log" Margin="10,10,205,42" FontSize="16" IsReadOnly="True" TextWrapping="Wrap" Background="#FF171717" BorderBrush="#00ABADB3" Foreground="White" Focusable="False" IsTabStop="False" BorderThickness="0"/>
+        <TextBox x:Name="EnterMessage" Margin="10,0,205,10" FontSize="16" Height="27" VerticalAlignment="Bottom" KeyDown="EnterMessage_KeyDown" BorderBrush="#00ABADB3" Background="#FF171717" Foreground="White" BorderThickness="0"/>
+        <Label Content="Server IP:" HorizontalAlignment="Right" Margin="0,36,10,0" VerticalAlignment="Top" Width="190" Foreground="White" FontSize="16" ToolTip="This is the address of the server you are attemption to join."/>
+        <TextBox x:Name="IPBox" HorizontalAlignment="Right" Height="23" Margin="0,41,10,0" TextWrapping="Wrap" Text="127.0.0.1" VerticalAlignment="Top" Width="110" FontSize="16" BorderThickness="0" BorderBrush="#00ABADB3" Background="#FF333337" Foreground="White" TextChanged="IPBox_TextChanged"/>
+        <Label Content="Port:" HorizontalAlignment="Right" Margin="0,67,10,0" VerticalAlignment="Top" Width="158" Foreground="White" FontSize="16" ToolTip="The default port number of one of these server is 25565. I recommend you leave this alone."/>
+        <TextBox x:Name="PortBox" HorizontalAlignment="Right" Height="23" Margin="0,72,10,0" TextWrapping="Wrap" Text="25565" VerticalAlignment="Top" Width="110" FontSize="16" BorderThickness="0" BorderBrush="#00ABADB3" Background="#FF333337" Foreground="White" TextChanged="PortBox_TextChanged"/>
+        <Button x:Name="ConnectButton" Content="Connect" HorizontalAlignment="Right" Margin="0,103,10,0" VerticalAlignment="Top" Width="110" Height="24" FontSize="14" Background="#FF333337" Foreground="White" Click="ConnectButton_Click"/>
+        <Label x:Name="ConnectionStatus" Content="Not Connected" Margin="0,0,10,10" Foreground="Firebrick" FontSize="14" HorizontalContentAlignment="Right" Height="29" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="110"/>
+        <Label Content="Name:" HorizontalAlignment="Right" Margin="0,5,10,0" VerticalAlignment="Top" Width="171" Foreground="White" FontSize="16" ToolTip="This is the name in chat you will have upon connection."/>
+        <TextBox x:Name="UserNameBox" HorizontalAlignment="Right" Height="23" Margin="0,10,10,0" TextWrapping="Wrap" Text="User" VerticalAlignment="Top" Width="110" FontSize="16" BorderThickness="0" BorderBrush="#00ABADB3" Background="#FF333337" Foreground="White" TextChanged="UserNameBox_TextChanged"/>
+
+    </Grid>
+</Window>
