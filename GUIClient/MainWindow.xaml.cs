@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace GUIClient
 {
@@ -36,6 +37,9 @@ namespace GUIClient
             if (UserName != null)
             {
                 Log.Text += message + "\n";
+                // whenever receiving a new message, scroll the chat to the bottom
+                // In the future it could be a good idea to only scroll the user to the bottom if they are not scrolled up a lot
+                // Right now if trying to look for a really old message, the user could lose all their scrolling progress just by receiving a message, which is out of their control
                 Log.ScrollToEnd();
             }
         }
@@ -54,8 +58,11 @@ namespace GUIClient
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             // Have to close connection or else this class will continue to run even if the window closes
-            connection.Close();
-            connection = null;
+            if (connection != null)
+            {
+                connection.Close();
+                connection = null;
+            }
             Application.Current.Shutdown();
         }
 
@@ -70,15 +77,9 @@ namespace GUIClient
                     connection = null;
                 }
                 connection = new Connection(this, IP, port);
-                ConnectionStatus.Content = "Connected";
-                ConnectionStatus.Foreground = new SolidColorBrush(Colors.LimeGreen);
                 connection.MessageSend("/name " + UserName);
-            } catch (Exception exception)
-            {
-                connection = null;
-                ConnectionStatus.Content = "Not Connected";
-                ConnectionStatus.Foreground = new SolidColorBrush(Colors.Firebrick);
-            }
+            } catch (Exception) { }
+
             Log.Text = "";
         }
 
@@ -98,6 +99,20 @@ namespace GUIClient
         {
             TextBox tb = (TextBox)sender;
             UserName = tb.Text;
+        }
+
+        // Changes the label in the bottom right to reflect on if the client is connected or not
+        public void UpdateConnectionStatus(bool connected)
+        {
+            if (connected) {
+                ConnectionStatus.Content = "Connected";
+                ConnectionStatus.Foreground = new SolidColorBrush(Colors.LimeGreen);
+            } else
+            {
+                connection = null;
+                ConnectionStatus.Content = "Not Connected";
+                ConnectionStatus.Foreground = new SolidColorBrush(Colors.Firebrick);
+            }
         }
     }
 }

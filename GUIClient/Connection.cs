@@ -38,6 +38,9 @@ namespace GUIClient
 
             tReceiver = new Thread(() => MessageReceiver());
             tReceiver.Start();
+
+            // Changes text that displays whether there is a connection or not
+            window.UpdateConnectionStatus(true);
         }
 
         private void MessageReceiver()
@@ -47,9 +50,15 @@ namespace GUIClient
 
             while (true)
             {
-                message = sr.ReadLine();
-                // Basically makes this action run on the UI thread since this method runs on a different one
-                window.Dispatcher.Invoke(new Action(() => { window.AddMessage(message); }));
+                try
+                {
+                    message = sr.ReadLine();
+                    // Basically makes this action run on the UI thread since this method runs on a different one
+                    window.Dispatcher.Invoke(new Action(() => { window.AddMessage(message); }));
+                } catch (IOException)
+                {
+                    Close();
+                }
             }
         }
 
@@ -61,7 +70,12 @@ namespace GUIClient
 
         public void Close()
         {
-            MessageSend("/quit");
+            if (client.Connected)
+            {
+                MessageSend("/quit");
+            }
+            // This status update needs to be invoked an another thread becomes sometimes this close method is called from a thread other than the MainWindow's thread
+            window.Dispatcher.Invoke(new Action(() => { window.UpdateConnectionStatus(false); }));
             tReceiver.Abort();
             client.Close();
         }
